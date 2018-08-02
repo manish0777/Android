@@ -1,0 +1,19 @@
+[
+  {
+    "id":"1",
+    "title":"category"
+  }
+,
+  {
+    "id":"2",
+    "title":"most Viewed product"
+ },
+  {
+    "id":"3",
+    "title":"Most Ordered Product"
+  },
+  {
+    "id":"4",
+    "title":"Most Shared product"
+  }
+]
