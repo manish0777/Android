@@ -38,9 +38,9 @@ public class DataViewModel extends AndroidViewModel {
     }
 
 
-    public LiveData<List<Category>> getAllCategory() {
+    public LiveData<List<Category>> getAllCategory(int parent) {
         databaseInterface = getDatabaseInterface();
-        return databaseInterface.getAllCategory();
+        return databaseInterface.getAllCategory(parent);
     }
 
     public LiveData<List<Product>> getAllProductByCatId(int catId) {
@@ -70,7 +70,7 @@ public class DataViewModel extends AndroidViewModel {
         databaseInterface = getDatabaseInterface();
         return databaseInterface.getVarientTypes(pId);
     }
-    public LiveData<List<SubCategory>> getSubCategories(int catId){
+    public LiveData<List<Category>> getSubCategories(int catId){
         databaseInterface=getDatabaseInterface();
         return databaseInterface.getSubCategories(catId);
     }

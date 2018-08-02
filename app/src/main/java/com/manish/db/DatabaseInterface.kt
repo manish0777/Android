@@ -45,8 +45,8 @@ interface DatabaseInterface {
     fun getProductByCatId(arg0: Int): LiveData<List<Product>>
 
 
-    @Query("select * from Category")
-    fun getAllCategory(): LiveData<List<Category>>
+    @Query("select * from Category where parent = :arg0")
+    fun getAllCategory(arg0: Int): LiveData<List<Category>>
 
     @Query("select * from MostViewedProduct")
     fun getMostViewedProduct(): LiveData<List<MostViewedProduct>>
@@ -54,8 +54,8 @@ interface DatabaseInterface {
     @Query("select * from MostOrderdProduct")
     fun getMostOrderedProduct(): LiveData<List<MostOrderdProduct>>
 
-    @Query("select * from SubCategory where catId = :arg0")
-    fun getSubCategories(arg0: Int): LiveData<List<SubCategory>>
+    @Query("select * from Category where parent = :arg0")
+    fun getSubCategories(arg0: Int): LiveData<List<Category>>
 
     @Query("select DISTINCT varientType from ProductVarient where productId = :arg0")
     fun getVarientTypes(arg0: Int): LiveData<List<ProductVarient>>

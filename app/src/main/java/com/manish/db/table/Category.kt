@@ -10,13 +10,16 @@ import android.os.Parcelable
 @Entity
 class Category() {
 
-    @PrimaryKey
-    var catId: Int? = null
-
     @ColumnInfo(name = "catName")
     var catName: String? = null
+
     @ColumnInfo(name = "parent")
     var parent: Int? = null
+    @PrimaryKey
+    var catId: Int? = null
+    @ColumnInfo(name = "mappingId")
+    var mappingId: Int? = null
+
 
 
 }

@@ -1,5 +1,6 @@
 package com.manish;
 
+import android.app.Activity;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.manish.adapter.HomeCategoryAdapter;
 import com.manish.adapter.HomePageAdapter;
 import com.manish.db.DatabaseInterface;
 import com.manish.db.EcomDataBase;
@@ -26,6 +28,7 @@ public class MainActivity extends BaseActivity {
     private List<Category> categoryArrayList = new ArrayList<>();
     private DatabaseInterface databaseInterface;
     private DataViewModel dataViewModel;
+   private HomePageAdapter homePageAdapter;
 
 
     @Override
@@ -37,7 +40,7 @@ public class MainActivity extends BaseActivity {
         dataViewModel = ViewModelProviders.of(MainActivity.this).get(DataViewModel.class);
         if (Apputil.checkInternetConnection()) {
             DataViewModel dataViewModel = new DataViewModel(ApplicationLoader.getInstance());
-            dataViewModel.getAllCategory().observe(this, new Observer<List<Category>>() {
+            dataViewModel.getAllCategory(0).observe(this, new Observer<List<Category>>() {
                 @Override
                 public void onChanged(@Nullable List<Category> categoryList) {
 
@@ -70,20 +73,29 @@ public class MainActivity extends BaseActivity {
         LinearLayoutManager hLayoutManager = new LinearLayoutManager(this);
         hLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rvhome.setLayoutManager(hLayoutManager);
-        final HomePageAdapter homePageAdapter = new HomePageAdapter(MainActivity.this, homePageBeanList);
+        homePageAdapter = new HomePageAdapter(MainActivity.this, homePageBeanList);
         rvhome.setAdapter(homePageAdapter);
-        dataViewModel.getAllCategory().observe(this, new Observer<List<Category>>() {
+
+        getCategoryList();
+    }
+
+    private void getCategoryList() {
+        dataViewModel.getAllCategory(0).observe(this, new Observer<List<Category>>() {
             @Override
             public void onChanged(@Nullable final List<Category> list) {
                 // Update the cached copy of the words in the adapter.
                 homePageAdapter.setCategoryList((ArrayList<Category>) list);
             }
         });
-
-
     }
 
-
-
-
+    @Override
+    public void onBackPressed() {
+        if(HomeCategoryAdapter.isRefresh){
+            HomeCategoryAdapter.isRefresh=false;
+            getCategoryList();
+        }else {
+            super.onBackPressed();
+        }
+    }
 }

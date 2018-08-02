@@ -8,6 +8,7 @@ import android.content.res.Resources;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,7 @@ public class HomeCategoryAdapter extends RecyclerView.Adapter<HomeCategoryAdapte
     Activity activity;
     private DisplayMetrics displayMetrics;
     int screenWidthInDp;
+    public static boolean isRefresh=false;
 
 
     public HomeCategoryAdapter(Activity activity, List<Category> CategoryList) {
@@ -68,16 +70,30 @@ public class HomeCategoryAdapter extends RecyclerView.Adapter<HomeCategoryAdapte
         holder.outerLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openPLPScreen(shopCategoryBean.getCatId());
-//                DataViewModel dataViewModel = new DataViewModel(ApplicationLoader.getInstance());
-//                dataViewModel.getMostOrderedProduct().observe((LifecycleOwner) activity, new Observer<List<Category>>() {
-//                    @Override
-//                    public void onChanged(@Nullable List<Category> mostViewedProducts) {
-//
-//                        mostViewedAdapter.setMostViewedProduct(mostViewedProducts);
-//
-//                    }
-//                });
+                try {
+                    if(shopCategoryBean.getMappingId()==shopCategoryBean.getParent()){
+                        openPLPScreen(shopCategoryBean.getCatId());
+                        return;
+                    }
+                    DataViewModel dataViewModel = new DataViewModel(ApplicationLoader.getInstance());
+                    dataViewModel.getSubCategories(shopCategoryBean.getMappingId()).observe((LifecycleOwner) activity, new Observer<List<Category>>() {
+                        @Override
+                        public void onChanged(@Nullable List<Category> categoryList) {
+                            if(categoryList!=null && categoryList.size()>0){
+                                isRefresh=true;
+                                CategoryList=categoryList;
+                                notifyDataSetChanged();
+                            }else{
+                                openPLPScreen(shopCategoryBean.getCatId());
+                            }
+
+
+                        }
+                    });
+                } catch (Exception e) {
+                    openPLPScreen(shopCategoryBean.getCatId());
+
+                }
 
             }
         });

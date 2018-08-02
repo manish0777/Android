@@ -38,25 +38,26 @@ public class APIParserBean {
 
     private static void processRankingData(JSONArray mostviewdAA) {
         try {
-            for (int i = 0; i < mostviewdAA.length(); i++) {
-                JSONObject rankingobj = mostviewdAA.getJSONObject(i);
-                String title = rankingobj.getString("ranking");
-                if (title != null && title.equalsIgnoreCase("Most Viewed Products")) {
-                    JSONArray viewedProd = rankingobj.getJSONArray("products");
-                    getMostViewdProduct(viewedProd);
-                }
-                if (title != null && title.equalsIgnoreCase("Most OrdeRed Products")) {
-                    JSONArray viewedProd = rankingobj.getJSONArray("products");
-                    getMostOrderedProduct(viewedProd);
+            if(mostviewdAA!=null && mostviewdAA.length()>0) {
+                for (int i = 0; i < mostviewdAA.length(); i++) {
+                    JSONObject rankingobj = mostviewdAA.getJSONObject(i);
+                    String title = rankingobj.getString("ranking");
+                    if (title != null && title.equalsIgnoreCase("Most Viewed Products")) {
+                        JSONArray viewedProd = rankingobj.getJSONArray("products");
+                        getMostViewdProduct(viewedProd);
+                    }
+                    if (title != null && title.equalsIgnoreCase("Most OrdeRed Products")) {
+                        JSONArray viewedProd = rankingobj.getJSONArray("products");
+                        getMostOrderedProduct(viewedProd);
 
+                    }
+                    if (title != null && title.equalsIgnoreCase("Most ShaRed Products")) {
+                        JSONArray viewedProd = rankingobj.getJSONArray("products");
+                        getMostSharedProduct(viewedProd);
+                    }
                 }
-                if (title != null && title.equalsIgnoreCase("Most ShaRed Products")) {
-                    JSONArray viewedProd = rankingobj.getJSONArray("products");
-                    getMostSharedProduct(viewedProd);
-                }
+
             }
-
-
         } catch (Exception e) {
 
         }
@@ -119,35 +120,43 @@ public class APIParserBean {
                 JSONObject catobject = catArr.getJSONObject(i);
                 Category category = new Category();
                 category.setCatId(Integer.parseInt(catobject.getString("id")));
-                category.setCatName(catobject.getString("name"));
+                category.setMappingId(Integer.parseInt(catobject.getString("id")));
 
                 JSONArray subcatArr=catobject.getJSONArray("child_categories");
-//                if(subcatArr!=null && subcatArr.length()>0) {
-//                   processSubCategory(subcatArr,category,categoryArrayList);
-//                }else{
-//                    category.setCatName(catobject.getString("name"));
-//                    category.setParent(0);
-//                    categoryArrayList.add(category);
-//                }
-                categoryArrayList.add(category);
+                if(subcatArr!=null && subcatArr.length()>0) {
+                   processSubCategory(subcatArr,category,categoryArrayList);
+                }
+                    category.setCatName(catobject.getString("name"));
+                    category.setParent(0);
+                    categoryArrayList.add(category);
+
+//                categoryArrayList.add(category);
                 JSONArray prodArr = catobject.getJSONArray("products");
-                processProduct(prodArr, Integer.parseInt(catobject.getString("id")));
+                if(prodArr!=null&& prodArr.length()>0) {
+                    processProduct(prodArr, Integer.parseInt(catobject.getString("id")));
+                }
             }
             EcomDataBase.getEcomDataBase(ApplicationLoader.getInstance()).getDatabaseInterface().saveAllCategory(categoryArrayList);
 
         } catch (Exception e) {
+            e.printStackTrace();
 
         }
     }
 
     private static void processSubCategory(JSONArray subcatArr, Category category, List<Category> categoryArrayList) {
         try {
+            ArrayList<Category> categories= new ArrayList<>();
             for (int j = 0; j <subcatArr.length(); j++) {
+                Category category1=new Category();
                 int value=subcatArr.getInt(j);
-                category.setParent(1);
-                category.setCatName(""+value);
-                categoryArrayList.add(category);
+                category1.setParent(category.getCatId());
+                category1.setCatName(""+value);
+//                category1.setCatId(category.getCatId());
+                category1.setMappingId(category.getCatId());
+                categories.add(category1);
             }
+            categoryArrayList.addAll(categories);
         } catch (Exception e) {
 
         }
@@ -166,7 +175,9 @@ public class APIParserBean {
                 product.setCatgoryID(catId);
                 productArrayList.add(product);
                 JSONArray varientArr = prodobject.getJSONArray("variants");
-                processVarient(varientArr, product.getPId());
+                if(varientArr!=null && varientArr.length()>0) {
+                    processVarient(varientArr, product.getPId());
+                }
             }
             EcomDataBase.getEcomDataBase(ApplicationLoader.getInstance()).getDatabaseInterface().saveAllProduct(productArrayList);
 
