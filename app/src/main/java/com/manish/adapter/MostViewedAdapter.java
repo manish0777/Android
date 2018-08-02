@@ -40,9 +40,6 @@ class MostViewedAdapter extends RecyclerView.Adapter<MostViewedAdapter.MostProdu
     public void onBindViewHolder(@NonNull MostViewedAdapter.MostProductViewHolder holder, int position) {
 
         final MostViewedProduct mostViewedProduct = mostViewedProducts.get(position);
-//        float reqspacing = screenWidthInDp / (int) 4.2;
-//        holder.outerLayout.getLayoutParams().width = (int) reqspacing;
-//        float dp = Resources.getSystem().getDisplayMetrics().density;
         holder.tvName.setText("Product Id :" + mostViewedProduct.getId());
         holder.tvCount.setText("Count:" + mostViewedProduct.getViewcount());
 
@@ -64,8 +61,8 @@ class MostViewedAdapter extends RecyclerView.Adapter<MostViewedAdapter.MostProdu
 
         public MostProductViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvName = (TextView) itemView.findViewById(R.id.tv_pid);
-            tvCount = (TextView) itemView.findViewById(R.id.tv_viewcount);
+            tvName = itemView.findViewById(R.id.tv_pid);
+            tvCount = itemView.findViewById(R.id.tv_viewcount);
         }
     }
 }

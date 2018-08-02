@@ -85,8 +85,8 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
         public ProductViewHolder(View itemView) {
             super(itemView);
-            tvName = (TextView) itemView.findViewById(R.id.tv_name);
-            outerLayout = (RelativeLayout) itemView.findViewById(R.id.outer_layout);
+            tvName = itemView.findViewById(R.id.tv_name);
+            outerLayout = itemView.findViewById(R.id.outer_layout);
 
         }
     }

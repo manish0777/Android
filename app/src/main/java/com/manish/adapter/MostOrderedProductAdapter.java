@@ -55,8 +55,8 @@ public class MostOrderedProductAdapter extends RecyclerView.Adapter<MostOrderedP
 
         public MostProductViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvName = (TextView) itemView.findViewById(R.id.tv_pid);
-            tvCount = (TextView) itemView.findViewById(R.id.tv_viewcount);
+            tvName = itemView.findViewById(R.id.tv_pid);
+            tvCount = itemView.findViewById(R.id.tv_viewcount);
         }
     }
 }

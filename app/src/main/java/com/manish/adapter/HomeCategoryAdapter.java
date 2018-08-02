@@ -102,8 +102,8 @@ public class HomeCategoryAdapter extends RecyclerView.Adapter<HomeCategoryAdapte
 
         public CategoryViewHolder(View itemView) {
             super(itemView);
-            tvName = (TextView) itemView.findViewById(R.id.tv_name);
-            outerLayout = (RelativeLayout) itemView.findViewById(R.id.outer_layout);
+            tvName = itemView.findViewById(R.id.tv_name);
+            outerLayout = itemView.findViewById(R.id.outer_layout);
 
         }
     }

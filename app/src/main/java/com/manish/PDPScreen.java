@@ -1,9 +1,6 @@
 package com.manish;
 
-import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProvider;
-import android.arch.lifecycle.ViewModelProviders;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,15 +9,10 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.manish.db.table.MostOrderdProduct;
-import com.manish.db.table.Product;
 import com.manish.db.table.ProductVarient;
 import com.manish.viewmodel.DataViewModel;
 
-import java.security.cert.PolicyNode;
-import java.util.ArrayList;
 import java.util.List;
 
 public class PDPScreen extends BaseActivity {
