@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 
 import com.manish.BaseActivity;
 import com.manish.R;
@@ -24,6 +25,7 @@ public class PLPScreen extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.plp_screen);
+        getSupportActionBar().setTitle("Product List");
         catId = getIntent().getIntExtra("cat_id", 0);
         final RecyclerView rvhome = (RecyclerView) findViewById(R.id.rv_plp);
         int numberOfColumns = 2;

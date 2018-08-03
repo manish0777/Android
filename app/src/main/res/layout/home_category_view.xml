@@ -14,7 +14,7 @@
         android:layout_gravity="center"
         android:background="#ff00"
         android:ellipsize="end"
-        android:text="Category"
+        android:text="Categories"
         android:textColor="#FFF"
         android:padding="10dp"
         android:textSize="16sp"

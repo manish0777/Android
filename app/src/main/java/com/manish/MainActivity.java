@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 
 import com.manish.adapter.HomeCategoryAdapter;
 import com.manish.adapter.HomePageAdapter;
@@ -28,7 +30,7 @@ public class MainActivity extends BaseActivity {
     private List<Category> categoryArrayList = new ArrayList<>();
     private DatabaseInterface databaseInterface;
     private DataViewModel dataViewModel;
-   private HomePageAdapter homePageAdapter;
+    private HomePageAdapter homePageAdapter;
 
 
     @Override
@@ -38,18 +40,23 @@ public class MainActivity extends BaseActivity {
         EcomDataBase ecomDataBase = EcomDataBase.getEcomDataBase(MainActivity.this);
         databaseInterface = ecomDataBase.getDatabaseInterface();
         dataViewModel = ViewModelProviders.of(MainActivity.this).get(DataViewModel.class);
-        if (Apputil.checkInternetConnection()) {
+
             DataViewModel dataViewModel = new DataViewModel(ApplicationLoader.getInstance());
             dataViewModel.getAllCategory(0).observe(this, new Observer<List<Category>>() {
                 @Override
                 public void onChanged(@Nullable List<Category> categoryList) {
 
                     if (categoryList == null || categoryList.size() <= 0) {
-                        DataUtils.getResult();
+                        if(Apputil.checkInternetConnection()) {
+                            DataUtils.getResult();
+                        }else{
+                            Toast.makeText(MainActivity.this, "Please enable your internet connection only once to get sync data", Toast.LENGTH_LONG).show();
+                            finish();
+                        }
                     }
                 }
             });
-        }
+
         setViews();
     }
 
@@ -75,7 +82,6 @@ public class MainActivity extends BaseActivity {
         rvhome.setLayoutManager(hLayoutManager);
         homePageAdapter = new HomePageAdapter(MainActivity.this, homePageBeanList);
         rvhome.setAdapter(homePageAdapter);
-
         getCategoryList();
     }
 
@@ -83,7 +89,6 @@ public class MainActivity extends BaseActivity {
         dataViewModel.getAllCategory(0).observe(this, new Observer<List<Category>>() {
             @Override
             public void onChanged(@Nullable final List<Category> list) {
-                // Update the cached copy of the words in the adapter.
                 homePageAdapter.setCategoryList((ArrayList<Category>) list);
             }
         });
@@ -91,10 +96,10 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        if(HomeCategoryAdapter.isRefresh){
-            HomeCategoryAdapter.isRefresh=false;
+        if (HomeCategoryAdapter.isRefresh) {
+            HomeCategoryAdapter.isRefresh = false;
             getCategoryList();
-        }else {
+        } else {
             super.onBackPressed();
         }
     }
