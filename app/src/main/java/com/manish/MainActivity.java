@@ -1,8 +1,10 @@
 package com.manish;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -50,14 +52,28 @@ public class MainActivity extends BaseActivity {
                         if(Apputil.checkInternetConnection()) {
                             DataUtils.getResult();
                         }else{
-                            Toast.makeText(MainActivity.this, "Please enable your internet connection only once to get sync data", Toast.LENGTH_LONG).show();
-                            finish();
+                            showNetworkDialog();
                         }
                     }
                 }
             });
 
         setViews();
+    }
+
+    private void showNetworkDialog() {
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
+        alertDialog.setTitle("Alert!!");
+        alertDialog.setCancelable(false);
+        alertDialog.setMessage("Please enable your internet connection only once to get sync data");
+        alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                finish();
+
+            }
+        });
+        alertDialog.show();
     }
 
     private void setViews() {

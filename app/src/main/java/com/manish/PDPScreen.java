@@ -28,7 +28,7 @@ public class PDPScreen extends BaseActivity {
         pId = getIntent().getIntExtra("pId", 0);
         pName=getIntent().getStringExtra("pName");
         tvName.setText("Product Name : "+pName);
-        getSupportActionBar().setTitle("Product List");
+        getSupportActionBar().setTitle("Product Details");
         getProductDeatils();
     }
 
